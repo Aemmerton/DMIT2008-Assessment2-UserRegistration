@@ -1,19 +1,16 @@
-# Employee Manager Day 6
+# Assessment-2
 
-### EJS TASKS
-- Setup EJS with Node and Express
-- Add the dashboard and the login to the views folder.
-- Add slots to the login template for the password and email warnings.
-- Send the template using res.render(template, {data})
-- Update the index.html page anchor elements to point to the login get route.
+### What This Project Does
+- This project allows a user to register an account which is validated on the client side
+- If the user inputs invalid data, error messages will be displayed
+- After the account is validated/registered a user object matching it is added to the users.json file
+- If the user successfully registers, they are routed to the login page
+- When logging in the email and password are validated against the user objects within the     users.json file
+- If the login validation is confirmed the user is routed to the dashboard
+- If the login validation isn't correct the user is presented with errors and stays on the login page
 
-### Login Service Returns User Object
-- If value isValidUser true redirect to dashboard.
-- Set cookie session variable to true.
 
-### Login Service Returns NULL
-- Render login template and add warnings messages.
-- Adding client side javascript to template.
+
 
 
  

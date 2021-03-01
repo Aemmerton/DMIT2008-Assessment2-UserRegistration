@@ -10,6 +10,7 @@ const cookSession = require('cookie-session')
 
 // Importing our Login Service Used With the POST Login Route
 const loginService = require('./services/loginService')
+const registerService = require('./services/registerService')
 
 
 
@@ -70,6 +71,13 @@ app.use(express.static(path.join(__dirname, "../client"), {extensions: ["html", 
    res.render('login', {passwordWarning:"", emailWarning:"", email:"", password:""})
 
  })
+
+ app.get('/register', (req, res)=>{
+  // user template placed inside the views directory
+  // res.render(view, data)   ejs.render(template, {data})
+  res.render('register', {usernameWarning:"", passwordWarning:"", emailWarning:"", username:"", email:"", password:""})
+
+})
  app.post('/login', (req, res)=>{
    // if your incomming name value pairs are alot then create an object
     const credentials = {
@@ -99,6 +107,40 @@ app.use(express.static(path.join(__dirname, "../client"), {extensions: ["html", 
             })
        }
   })
+
+  app.post('/register', (req, res)=>{
+     const credentials = {
+       username:req.body.username,
+       email:req.body.email,
+       password:req.body.password
+     }
+     // isValidUser returns {isValid: false, usernameWarning, emailWarning, passwordWarning}
+     
+     const isValidUser =  registerService.authenticate(credentials)
+    
+        //if the isValidUser has a user returned
+        if( isValidUser.isValid){
+              // set a session value isValid
+              if(!req.session.isValid){
+                  req.session.isValid = true;
+              }
+              // user redirected to login
+              res.redirect('login')
+        }
+ 
+        // if the registration is invalid, present the user with error messages and keep them on registration page
+        if(!isValidUser.user){
+            // req.body.email, req.body.password
+            res.render('register', {
+              usernameWarning:isValidUser.usernameWarning,
+              emailWarning:isValidUser.emailWarning, 
+              passwordWarning:isValidUser.passwordWarning,
+              username:req.body.username,
+              email:req.body.email,
+              password:req.body.password
+             })
+        }
+   })
     
  
  app.post('/login', (req, res)=>{
